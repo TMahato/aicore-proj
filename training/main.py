@@ -34,4 +34,8 @@ print(f"Test Data Score: {score}")
 
 # Save model
 import pickle
+
+# Ensure the output directory exists
+os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+
 pickle.dump(model, open(MODEL_PATH, 'wb'))
