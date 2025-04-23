@@ -22,6 +22,7 @@ spec:
     parameters: # placeholder for string like inputs
         - name: CLASS_LABEL # identifier local to this workflow
         - name: KERNEL # identifier local to this workflow
+        - name: ALGORITHM
   templates:
   - name: mypipeline
     inputs:
@@ -44,5 +45,7 @@ spec:
           value: "{{workflow.parameters.CLASS_LABEL}}" # value to set from local (to workflow) variable C
         - name: KERNEL # name of the environment variable inside Docker container
           value: "{{workflow.parameters.KERNEL}}" # value to set from local (to workflow) variable kernel
+        - name: ALGORITHM  # <-- pass to container
+          value: "{{workflow.parameters.ALGORITHM}}"
       args:
         - "python /app/src/main.py"
