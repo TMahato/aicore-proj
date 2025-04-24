@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: iris-training-pipeline
+  annotations:
+    scenarios.ai.sap.com/name: "Iris DataSet Classifier Scenario"
+    scenarios.ai.sap.com/description: "SAP AI Core tutorial to classify the popular iris dataset"
+    executables.ai.sap.com/name: "Iris model training"
+    executables.ai.sap.com/description: "Training with popular iris dataset"
+    artifacts.ai.sap.com/irisdataset.kind: "dataset"
+    artifacts.ai.sap.com/irismodel.kind: "model"
+  labels:
+    scenarios.ai.sap.com/id: "iris-classifier-scenario"
+    ai.sap.com/version: "4.0"
+spec:
+  imagePullSecrets:
+    - name: tanmay-credentials
+  entrypoint: mypipeline
+  arguments:
+    parameters:
+      - name: CLASS_LABEL
+        value: "1"
+      - name: KERNEL
+        value: "rbf"
+      - name: ALGORITHM
+        value: "svm"
+  templates:
+  - name: mypipeline
+    inputs:
+      artifacts:
+        - name: irisdataset
+          path: /app/data/
+    outputs:
+      artifacts:
+        - name: irismodel
+          globalName: irismodel
+          path: /app/model/
+          archive:
+            none: {}
+    container:
+      image: docker.io/tanmay471/iris-ai-training-image:03
+      command: ["/bin/sh", "-c"]
+      env:
+        - name: CLASS_LABEL
+          value: "{{workflow.parameters.CLASS_LABEL}}"
+        - name: KERNEL
+          value: "{{workflow.parameters.KERNEL}}"
+        - name: ALGORITHM
+          value: "{{workflow.parameters.ALGORITHM}}"
+      args:
+        - "python /app/src/main.py"
