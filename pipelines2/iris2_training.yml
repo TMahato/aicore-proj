@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: iris-training-pipeline
+  name: iris-training-pipeline-2
   annotations:
     scenarios.ai.sap.com/name: "Iris DataSet Classifier Scenario 2"
     scenarios.ai.sap.com/description: "SAP AI Core tutorial to classify the popular iris dataset"
