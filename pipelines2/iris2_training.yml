@@ -3,14 +3,14 @@ kind: WorkflowTemplate
 metadata:
   name: iris-training-pipeline
   annotations:
-    scenarios.ai.sap.com/name: "Iris DataSet Classifier Scenario"
+    scenarios.ai.sap.com/name: "Iris DataSet Classifier Scenario 2"
     scenarios.ai.sap.com/description: "SAP AI Core tutorial to classify the popular iris dataset"
-    executables.ai.sap.com/name: "Iris model training"
-    executables.ai.sap.com/description: "Training with popular iris dataset"
+    executables.ai.sap.com/name: "Iris model training 2"
+    executables.ai.sap.com/description: "Training with popular iris dataset 2"
     artifacts.ai.sap.com/irisdataset.kind: "dataset"
     artifacts.ai.sap.com/irismodel.kind: "model"
   labels:
-    scenarios.ai.sap.com/id: "iris-classifier-scenario"
+    scenarios.ai.sap.com/id: "iris-classifier-scenario-2"
     ai.sap.com/version: "4.0"
 spec:
   imagePullSecrets:
