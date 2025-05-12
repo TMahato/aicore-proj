@@ -1,51 +1,45 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: iris-training-pipeline-3
+  name: anomaly-detection-pipeline # executable id, updated to reflect new purpose
   annotations:
-    scenarios.ai.sap.com/name: "Iris DataSet Classifier Scenario 3"
-    scenarios.ai.sap.com/description: "SAP AI Core tutorial to classify the popular iris dataset 3"
-    executables.ai.sap.com/name: "Iris model training 3"
-    executables.ai.sap.com/description: "Training with popular iris dataset 3"
-    artifacts.ai.sap.com/irisdataset.kind: "dataset"
-    artifacts.ai.sap.com/irismodel.kind: "model"
+    scenarios.ai.sap.com/name: "Anomaly Detection Scenario" # Updated scenario name
+    scenarios.ai.sap.com/description: "SAP AI Core tutorial for anomaly detection on industrial data"
+
+    executables.ai.sap.com/name: "Anomaly Detection Model" # Updated executable name
+    executables.ai.sap.com/description: "Training anomaly detection models using PyCaret"
+    
+    artifacts.ai.sap.com/anomalydata.kind: "dataset" # Updated dataset reference
+    artifacts.ai.sap.com/anomalymodel.kind: "model" # Updated model reference
   labels:
-    scenarios.ai.sap.com/id: "iris-classifier-scenario-3"
+    scenarios.ai.sap.com/id: "anomaly-detection-scenario" # Updated scenario ID
     ai.sap.com/version: "4.0"
 spec:
   imagePullSecrets:
-    - name: tanmay-credentials
+    - name: tanmay-credentials # your docker registry secret
   entrypoint: mypipeline
   arguments:
-    parameters:
-      - name: CLASS_LABEL
-        value: "1"
-      - name: KERNEL
-        value: "rbf"
-      - name: ALGORITHM
-        value: "svm"
+    parameters: # Simplified parameters for anomaly detection
+        - name: ALGORITHM # Only keeping algorithm parameter as it's relevant for anomaly detection
   templates:
   - name: mypipeline
     inputs:
-      artifacts:
-        - name: irisdataset
-          path: /app/data/
+      artifacts:  # Updated artifact name
+        - name: anomalydata # Updated name
+          path: /app/data/ # Keeping same path
     outputs:
       artifacts:
-        - name: irismodel
-          globalName: irismodel
-          path: /app/model/
+        - name: anomalymodel # Updated local identifier
+          globalName: anomalymodel # Updated global name
+          path: /app/model/ # Keeping same path
           archive:
-            none: {}
+            none:   # No change
+              {}
     container:
-      image: docker.io/tanmay471/iris-ai-training-image:03
+      image: docker.io/tanmay471/anomaly-detection-image:01 # Updated image name
       command: ["/bin/sh", "-c"]
       env:
-        - name: CLASS_LABEL
-          value: "{{workflow.parameters.CLASS_LABEL}}"
-        - name: KERNEL
-          value: "{{workflow.parameters.KERNEL}}"
-        - name: ALGORITHM
+        - name: ALGORITHM  # Only keeping algorithm parameter
           value: "{{workflow.parameters.ALGORITHM}}"
       args:
         - "python /app/src/main.py"
